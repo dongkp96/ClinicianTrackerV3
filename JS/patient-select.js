@@ -30,10 +30,8 @@ const patientList = document.querySelector(".list");
 async function getPatients(){
     try{
         const results = await fetch("PHP/Patients/getPatients.php");
-        console.log(results);
 
         const patients = await results.json();
-        console.log(patients);
 
         patientList.innerHTML ="";
 
