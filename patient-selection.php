@@ -24,9 +24,14 @@
             </ul>
         </div>
         <div class="button-container">
-            <button id="add">Add Patient</button>
-            <button id="select">Select Patient</button>
-        </div>
+            <div>
+                <button id="add">Add Patient</button>
+                <button id="select">Select Patient</button>                
+            </div>
+            <div>
+                <button id="clinician-selection-return">Logout</button>
+            </div>                     
+        </div>      
     </main>
 
         <dialog id="patient-creation" class="display-none">

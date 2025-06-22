@@ -65,12 +65,14 @@ li{
     width:100%;
     border-end-start-radius: 18px;
     border-end-end-radius:18px;
-    height:5.5rem;
+    height:7.5rem;
     display:flex;
+    flex-direction: column;
     align-items:center;
     justify-content: center;
-    gap:2rem;
+    gap:1rem;
 }
+
 
 .button-container-secondary{
     margin-block-start: 1rem;
