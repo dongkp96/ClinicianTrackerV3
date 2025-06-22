@@ -1,3 +1,7 @@
+<?php
+session_start();
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,27 +17,38 @@
     <main>
         <section id="profile">
             <div id="profile-pic">
-                <img src="assets/male-profile-pic.jpeg" alt="male profile picture fill in with blue background" width="300px" height="300px">
+                <img src=<?php if($_SESSION["patient_gender"] === "m"){
+                        echo "assets/male-profile-pic.jpeg";
+                    }else if($_SESSION["patient_gender"] === "f"){
+                        echo "assets/female-profile-pic.jpg";
+                    }else{
+                        echo "assets/male-profile-pic.jpeg";
+                    }?> alt="profile picture fill in with blue background" width="300px" height="300px">
             </div>
             <div id="profile-basic-info">
-                <div>
-                    <h3>Name: </h3>
-                    <h3>John Doe</h3>
+                <div id="profile-identifiers">
+                    <h3>Name: <?php echo htmlspecialchars($_SESSION["patient_first_name"]) . " " . htmlspecialchars($_SESSION["patient_last_name"]) ?></h3>
+                    <p>Gender: <?php if($_SESSION["patient_gender"] === "m"){
+                        echo "Male";
+                    }else if($_SESSION["patient_gender"] === "f"){
+                        echo "Female";
+                    }else{
+                        echo "Deferred Gender identification";
+                    }?></p>                                       
                 </div>
                 <hr>
                 <div>
-                    <p>Diagnosis:</p>
-                    <p>Shoulder Pain</p>
+                    <p>Diagnosis: <?php echo htmlspecialchars($_SESSION["patient_diagnosis"]) ?></p>                   
                 </div>
                 <hr>
                 <div>
-                    <p>Age: 50</p>
-                    <p>DOB: 1/1/1975</p>
+                    <p>Age: <?php echo htmlspecialchars($_SESSION["patient_age"])?></p>
+                    <p>DOB: <?php echo htmlspecialchars($_SESSION["patient_dob"])?></p>
                 </div>
                 <hr>
                 <div>
-                    <p>Height (in): 68</p>
-                    <p>Weight (lb): 150</p>
+                    <p>Height (in): <?php echo htmlspecialchars($_SESSION["patient_height"]) ?></p>
+                    <p>Weight (lb): <?php echo htmlspecialchars($_SESSION["patient_weight"])?></p>
                 </div>
             </div>
             <hr>

@@ -48,7 +48,16 @@ li{
 #profile-basic-info div {
     display:flex;
     justify-content: space-evenly;
-    margin-block-end:1rem;
+    align-items:center;
+}
+
+#profile-identifiers{
+    display:flex;
+    flex-direction:column;
+}
+
+#profile-identifiers p{
+    margin-block-start:-10px;
 }
 
 #button-container{

@@ -81,7 +81,7 @@ async function deletePatient(patient){
 
 async function goToProfile(patient){
     try{
-        const response = await fetch("PHP/Patients/patientProfile.php"<{
+        const response = await fetch("PHP/Patients/patientProfile.php",{
             method: "POST",
             headers:{
                 "Content-Type": "application/json"
@@ -89,9 +89,10 @@ async function goToProfile(patient){
             body: JSON.stringify(patient)
         })
         const result = await response.json();
+        console.log("Result inside goTo function " + result);
         return result;
     }catch(error){
-        alert(error);
+        return {success:false, issue: error};
     }
 
 }
@@ -191,7 +192,7 @@ selectReturnBtn.addEventListener("click", (e)=>{
     patientHome.classList.toggle("display-none");   
 });
 
-profileGoBtn.addEventListener("click", (e)=>{
+profileGoBtn.addEventListener("click", async (e)=>{
     e.preventDefault();
 
     const patient = document.getElementById("selected");
@@ -199,6 +200,16 @@ profileGoBtn.addEventListener("click", (e)=>{
     const id = patientClass.split("-").pop();
 
     const selectedPatient = {id:id};
+
+    const result = await goToProfile(selectedPatient);
+    console.log(result.success);
+
+    if(result.success){
+        console.log("Result is success");
+        window.location.href = "patient-profile.php";
+    }
+
+
 });
 
 deleteBtn.addEventListener("click", async (e)=>{
@@ -212,9 +223,7 @@ deleteBtn.addEventListener("click", async (e)=>{
     
 
     const result = await deletePatient(deletedPatient);
-    console.log("Response from delete fetch: ", result)
     if(result.success){
-        console.log("success in delete");
         await getPatients();
         patientSelect.classList.toggle("display-none");
         patientSelect.classList.toggle("display");
