@@ -18,11 +18,15 @@ const profileGoBtn = document.getElementById("profile-go");
 const selectReturnBtn = document.getElementById("select-return");
 const deleteBtn = document.getElementById("delete");
 
+//logout button
+const logOutBtn = document.getElementById("clinician-selection-return");
+
 /*Patient list */
 const patientList = document.querySelector(".list");
 
 /*Functions */
 
+//Function get patients from PHP page and implement them on DOM
 async function getPatients(){
     try{
         const results = await fetch("PHP/Patients/getPatients.php");
@@ -46,6 +50,7 @@ async function getPatients(){
     }
 }
 
+//Function to add patient by sending a post request with JSON
 async function addPatients(newPatient){
     try{
         const response = await fetch("PHP/Patients/addPatients.php",{
@@ -63,6 +68,7 @@ async function addPatients(newPatient){
     }
 }
 
+//Function to delete patient by ID by sending a post request with JSON
 async function deletePatient(patient){
     try{
         const response = await fetch("PHP/Patients/deletePatients.php", {
@@ -79,6 +85,7 @@ async function deletePatient(patient){
     }
 }
 
+//Function that uses patient ID to ensure matching ID values prior to sending user to profile
 async function goToProfile(patient){
     try{
         const response = await fetch("PHP/Patients/patientProfile.php",{
@@ -89,12 +96,21 @@ async function goToProfile(patient){
             body: JSON.stringify(patient)
         })
         const result = await response.json();
-        console.log("Result inside goTo function " + result);
         return result;
     }catch(error){
         return {success:false, issue: error};
     }
 
+}
+
+async function logOut(){
+    try{
+        const response = await fetch("PHP/logout.php",{method: "POST"})
+        const result = await response.json();
+        return result;
+    }catch(error){
+        return {success:false};
+    }
 }
 
 /*Event Listeners*/
@@ -232,6 +248,16 @@ deleteBtn.addEventListener("click", async (e)=>{
     }
 
 });
+
+logOutBtn.addEventListener("click", async(e)=>{
+    e.preventDefault();
+
+    const result = await logOut();
+    if(result.success){
+        window.location.href = "index.php";
+    }
+
+})
 
 //Patient list 
 patientList.addEventListener("click", (e)=>{

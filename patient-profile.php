@@ -54,7 +54,7 @@ session_start();
             <hr>
             <div id = "button-container">
                 <button id="patient-select-return">Return to Patient Selection</button>
-                <button id="clinician-select-return">Return to Clinician Selection</button>
+                <button id="clinician-selection-return">Return to Clinician Selection</button>
             </div>
         </section>
 
