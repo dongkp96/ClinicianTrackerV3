@@ -91,7 +91,7 @@ button{
 }
 
 button:hover{
-    opacity: 0.80;
+    opacity: 0.50;
 }
 
 .list li:hover{

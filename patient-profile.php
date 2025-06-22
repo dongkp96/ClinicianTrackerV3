@@ -115,7 +115,7 @@ session_start();
             </div>
             <div class="column">
                 <label for="summary">Visit Summary: </label>
-                <textarea name="summary" id="summary" cols="60" rows="5"></textarea>
+                <textarea name="summary" id="summary" cols="60" rows="5" required></textarea>
             </div>
             <div class="modal-button-container">
                 <button id="submit-note">Submit Note</button>

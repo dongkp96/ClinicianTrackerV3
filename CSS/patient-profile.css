@@ -89,6 +89,10 @@ button{
     gap:1rem;
 }
 
+button:hover{
+    opacity: 0.5;
+}
+
 
 #notes{
     border:5px solid #D5C6E0;
