@@ -171,6 +171,7 @@ submitNoteBtn.addEventListener("click", async(e)=>{
     
 
     if(result.success){
+        await getNotes();
         document.getElementById("visitNumber").value ="";
         document.getElementById("visitDate").value="";
         document.getElementById("painLevel").value="";
@@ -183,6 +184,23 @@ submitNoteBtn.addEventListener("click", async(e)=>{
     }
 });
 
+notesList.addEventListener("click", (e)=>{
+    e.preventDefault();
+
+    const note = e.target.closest(".visit-note");
+    if(document.getElementById("selected")){
+        const lastSelected = document.getElementById("selected");
+        lastSelected.removeAttribute("id");
+        note.setAttribute("id", "selected");
+    }else{
+        note.setAttribute("id", "selected");
+    }
+    
+    
+
+});
+
+//loads notes once DOM loads for the patient Profile
 document.addEventListener("DOMContentLoaded", async()=>{
 
     await getNotes();

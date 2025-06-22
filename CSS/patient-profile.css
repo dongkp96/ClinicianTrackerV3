@@ -18,6 +18,7 @@ main{
     border-radius:25px;
     display:grid;
     grid-template-columns: 1fr 3fr 1fr;
+    overflow-y:hidden;
 }
 
 img{
@@ -89,13 +90,14 @@ button{
     gap:1rem;
 }
 
-button:hover{
+button:hover, .visit-note:hover{
     opacity: 0.5;
 }
 
 
 #notes{
     border:5px solid #D5C6E0;
+
 }
 #notes-nav{
     display:flex;
@@ -108,14 +110,16 @@ button:hover{
 #notes-holder{
     background-color:#F5E6E8;
     width:100%;
-    height:85%;
+    height:70%;
     padding:1rem 2rem;
+    overflow:scroll;
 }
 
 .visit-note{
     background-color:#AAA1C8;
     border-radius:20px;
     padding:1rem;
+    margin-block-end:1rem;
 }
 
 .visit-note-info{
