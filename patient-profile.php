@@ -73,7 +73,8 @@ session_start();
                                 <p>Visit Number: 1</p>
                                 <p>Pain Level:5</p>
                                 <p>Function Rating: 7</p>
-                                <p>Goals Met: 0</p>                               
+                                <p>Goals Met: 0</p>
+                                <p>Visit Date: </p>                              
                             </div>
                             <p>Summary: Lorem ipsum dolor sit, amet consectetur adipisicing elit. Rerum soluta libero doloremque cum quisquam voluptatum, quia architecto blanditiis, nesciunt praesentium necessitatibus minima perspiciatis iste quae fuga delectus laboriosam officiis ipsam.</p>
                         </div>
