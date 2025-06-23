@@ -196,6 +196,20 @@ notesList.addEventListener("click", (e)=>{
         note.setAttribute("id", "selected");
     }
     
+    const noteInfoContainer = clickedNote.querySelector(".visit-note-info");
+
+    const info = {
+        visitNumber: noteInfoContainer.children[0].textContent, // Visit Number
+        painLevel: noteInfoContainer.children[1].textContent, // Pain Level
+        functionRating: noteInfoContainer.children[2].textContent, //function
+        goalsMet: noteInfoContainer.children[3].textContent, // goals
+        visitDate: noteInfoContainer.children[4].textContent, // visitDate
+        summary: clickedNote.querySelector("p:last-of-type").textContent // Summary outside info container
+    };
+
+    
+
+
     
 
 });

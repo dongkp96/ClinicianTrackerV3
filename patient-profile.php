@@ -129,28 +129,28 @@ session_start();
         <form action="">
             <h3>Add Patient Visit Note</h3>
             <div>
-                <label for="visitNumber">Visit Number</label>
-                <input id = "visitNumber" type="number" name="visitNumber" required>
+                <label for="visitNumber-edit">Visit Number</label>
+                <input id = "visitNumber-edit" type="number" name="visitNumber" required>
                 <label for="visitDate">Visit Date:</label>
-                <input id="visitDate" type="date" name="visitDate" required>
+                <input id="visitDate-edit" type="date" name="visitDate" required>
             </div>
             <div class="column">
                 <div>
-                    <label for="painLevel">Pain Level(0-10):</label>
-                    <input id="painLevel"type="number" max="10" name ="painLevel" required>                    
+                    <label for="painLevel-edit">Pain Level(0-10):</label>
+                    <input id="painLevel-edit"type="number" max="10" name ="painLevel" required>                    
                 </div>
                 <div>
-                    <label for="function">Function Rating(0-10):</label>
-                    <input id="function"type="number" max="10" name ="function" required>                    
+                    <label for="function-edit">Function Rating(0-10):</label>
+                    <input id="function-edit"type="number" max="10" name ="function" required>                    
                 </div>
                 <div>
-                    <label for="goals">Goals Met: </label>
-                    <input id="goals"type="number" name ="goals" required>                       
+                    <label for="goals-edit">Goals Met: </label>
+                    <input id="goals-edit"type="number" name ="goals" required>                       
                 </div>                
             </div>
             <div class="column">
-                <label for="summary">Visit Summary: </label>
-                <textarea name="summary" id="summary" cols="60" rows="5"></textarea>
+                <label for="summary-edit">Visit Summary: </label>
+                <textarea name="summary-edit" id="summary" cols="60" rows="5"></textarea>
             </div>
             <div class="modal-button-container">
                 <button id="submit-note">Edit Note</button>
