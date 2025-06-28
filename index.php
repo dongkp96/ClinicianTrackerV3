@@ -83,6 +83,12 @@
             </form>
         </dialog>
 
+        <dialog id="error">
+            <h3>Error:</h3>
+            <p id="error-message"></p>
+            <button id="error-exit">Return</button>
+        </dialog>
+
         <script src="JS/index.js"></script>
 
 </body>

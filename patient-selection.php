@@ -90,6 +90,12 @@
                 <button id="select-return">Cancel</button>
             </div>            
         </dialog>
+        
+        <dialog id="error">
+            <h3>Error:</h3>
+            <p id="error-message"></p>
+            <button id="error-exit">Return</button>
+        </dialog>        
 
         <script src="JS/patient-select.js"></script>
 

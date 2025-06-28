@@ -4,6 +4,7 @@ const clinicianHome = document.getElementById("clinician-list");
 const clinicianCreate = document.getElementById("clinician-creation");
 const clinicianSelect =document.getElementById("clinician-select");
 const login = document.getElementById("clinician-login");
+const errorDialog = document.getElementById("error");
 
 
 /*buttons to be selected */
@@ -24,6 +25,10 @@ const deleteBtn = document.getElementById("delete");
 //login page buttons
 const loginBtn = document.getElementById("login");
 const loginReturnBtn = document.getElementById("login-return");
+
+//Error messaging dialog items
+const errorMsg = document.getElementById("error-message");
+const errorMsgBtn = document.getElementById("error-exit");
 
 /*list containing clinician names to be selected*/
 const clinicianList = document.querySelector(".list");
@@ -124,14 +129,19 @@ addBtn.addEventListener("click", (e)=>{
 selectBtn.addEventListener("click", (e)=>{
     e.preventDefault();
 
-    clinicianHome.classList.toggle("display-flex");
-    clinicianHome.classList.toggle("display-none");
-    clinicianSelect.classList.toggle("display-none");
-    clinicianSelect.classList.toggle("display");
+    if(document.getElementById("selected")){
+        clinicianHome.classList.toggle("display-flex");
+        clinicianHome.classList.toggle("display-none");
+        clinicianSelect.classList.toggle("display-none");
+        clinicianSelect.classList.toggle("display");
 
-    const clinicianInfo= document.getElementById("selected").textContent;
-    document.querySelector(".clinician-display").textContent= clinicianInfo;
-    document.querySelector(".clinician-display-login").textContent = clinicianInfo;
+        const clinicianInfo= document.getElementById("selected").textContent;
+        document.querySelector(".clinician-display").textContent= clinicianInfo;
+        document.querySelector(".clinician-display-login").textContent = clinicianInfo;        
+    }else{
+        errorMsg.textContent = "No Clinician Selected";
+        errorDialog.showModal();
+    }
 });
 
 //registration dialog buttpns
@@ -262,6 +272,11 @@ loginBtn.addEventListener("click", async(e)=>{
     }
 });
 
+errorMsgBtn.addEventListener("click", (e)=>{
+    e.preventDefault();
+
+    errorDialog.close();
+})
 
 
 

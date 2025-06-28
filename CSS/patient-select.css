@@ -130,3 +130,12 @@ form div{
 #user-creation *, #login div{
     margin-block: 0.5rem;
 } 
+
+#error{
+    padding:3rem;
+    text-align:center;
+    background-color:#F5E6E8; 
+    border-radius:20px;
+    border:5px solid #AAA1C8;
+    font-size:20px;
+}

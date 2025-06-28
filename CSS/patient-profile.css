@@ -106,6 +106,7 @@ button:hover, .visit-note:hover{
     align-items:center;
     background-color:#AAA1C8;
     padding:1.5rem 2rem;
+    border-bottom:5px solid #D5C6E0;
 }
 
 #notes-holder{

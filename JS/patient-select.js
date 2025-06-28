@@ -2,6 +2,7 @@
 const patientHome =document.getElementById("patient-list");
 const patientCreate =document.getElementById("patient-creation");
 const patientSelect =document.getElementById("patient-select");
+const errorDialog = document.getElementById("error");
 
 /*Buttons to be selected*/
 
@@ -23,6 +24,10 @@ const logOutBtn = document.getElementById("clinician-selection-return");
 
 /*Patient list */
 const patientList = document.querySelector(".list");
+
+//Error messaging dialog items
+const errorMsg = document.getElementById("error-message");
+const errorMsgBtn = document.getElementById("error-exit");
 
 /*Functions */
 
@@ -127,13 +132,18 @@ addBtn.addEventListener("click", (e)=>{
 selectBtn.addEventListener("click", (e)=>{
     e.preventDefault();
 
-    patientHome.classList.toggle("display-flex");
-    patientHome.classList.toggle("display-none");
-    patientSelect.classList.toggle("display-none");
-    patientSelect.classList.toggle("display");
+    if(document.getElementById("selected")){
+        patientHome.classList.toggle("display-flex");
+        patientHome.classList.toggle("display-none");
+        patientSelect.classList.toggle("display-none");
+        patientSelect.classList.toggle("display");
 
-    const patientInfo= document.getElementById("selected").textContent;
-    document.querySelector(".patient-display").textContent= patientInfo;
+        const patientInfo= document.getElementById("selected").textContent;
+        document.querySelector(".patient-display").textContent= patientInfo;        
+    }else{
+        errorMsg.textContent = "No Patient Selected";
+        errorDialog.showModal();       
+    }
 });
 
 //registration dialog buttpns
@@ -255,6 +265,12 @@ logOutBtn.addEventListener("click", async(e)=>{
         window.location.href = "index.php";
     }
 
+})
+
+errorMsgBtn.addEventListener("click", (e)=>{
+    e.preventDefault();
+
+    errorDialog.close();
 })
 
 //Patient list 
