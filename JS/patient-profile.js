@@ -1,5 +1,6 @@
 /*Windows and Items*/
 const addNoteModal = document.getElementById("add-note-window");
+const editNoteModal = document.getElementById("edit-note-window");
 
 /*Buttons */
 
@@ -12,6 +13,12 @@ const exitProfileBtn = document.getElementById("patient-select-return");
 const submitNoteBtn = document.getElementById("submit-note");
 const returnFromAddNoteBtn = document.getElementById("return-add-note");
 
+//edit note modal buttons
+const editNoteBtn = document.getElementById("edit-note");
+const deleteNoteBtn = document.getElementById("delete-note");
+const returnFromEditBtn = document.getElementById("return-edit-note");
+
+//Notes List
 const notesList = document.getElementById("notes-list");
 /*functions */
 
@@ -117,6 +124,7 @@ async function getNotes(){
 
 /*event listeners */
 
+//Event Listeners for adding note modal
 addNoteBtn.addEventListener("click", (e)=>{
     e.preventDefault();
 
@@ -127,25 +135,6 @@ returnFromAddNoteBtn.addEventListener("click", (e)=>{
     e.preventDefault();
     
     addNoteModal.close();
-})
-
-logOutBtn.addEventListener("click", async(e)=>{
-    e.preventDefault();
-
-    const result = await logOut();
-    if(result.success){
-        window.location.href = "index.php";
-    }
-
-})
-
-exitProfileBtn.addEventListener("click", async(e)=>{
-    e.preventDefault();
-
-    const result = await exitProfile();
-    if(result.success){
-        window.location.href = "patient-selection.php";
-    }
 })
 
 submitNoteBtn.addEventListener("click", async(e)=>{
@@ -184,6 +173,7 @@ submitNoteBtn.addEventListener("click", async(e)=>{
     }
 });
 
+//Event Listeners for editing notes
 notesList.addEventListener("click", (e)=>{
     e.preventDefault();
 
@@ -196,23 +186,63 @@ notesList.addEventListener("click", (e)=>{
         note.setAttribute("id", "selected");
     }
     
-    const noteInfoContainer = clickedNote.querySelector(".visit-note-info");
+    const noteInfoContainer = note.querySelector(".visit-note-info");
 
     const info = {
-        visitNumber: noteInfoContainer.children[0].textContent, // Visit Number
-        painLevel: noteInfoContainer.children[1].textContent, // Pain Level
-        functionRating: noteInfoContainer.children[2].textContent, //function
-        goalsMet: noteInfoContainer.children[3].textContent, // goals
-        visitDate: noteInfoContainer.children[4].textContent, // visitDate
-        summary: clickedNote.querySelector("p:last-of-type").textContent // Summary outside info container
+        visitNumber: noteInfoContainer.children[0].textContent.split(":").pop(), // Visit Number
+        painLevel: noteInfoContainer.children[1].textContent.split(":").pop(), // Pain Level
+        functionRating: noteInfoContainer.children[2].textContent.split(":").pop(), //function
+        goalsMet: noteInfoContainer.children[3].textContent.split(":").pop(), // goals
+        visitDate: noteInfoContainer.children[4].textContent.split(": ").pop(), // visitDate
+        summary: note.querySelector(".visit-note-info + p").textContent.split(":").pop() // Summary outside info container
     };
 
-    
+    const editVisitNumber = document.getElementById("visitNumber-edit");
+    const editVisitDate = document.getElementById("visitDate-edit");
+    const editPainLevel = document.getElementById("painLevel-edit");
+    const editFunctionRating = document.getElementById("function-edit");
+    const editGoalsMet = document.getElementById("goals-edit");
+    const editSummary = document.getElementById("summary-edit");
 
+    editVisitNumber.value = info.visitNumber;
+    editVisitDate.value = info.visitDate;
+    editPainLevel.value = info.painLevel;
+    editFunctionRating.value = info.functionRating;
+    editGoalsMet.value = info.goalsMet;
+    editSummary.value = info.summary;
 
+    editNoteModal.showModal();
     
 
 });
+
+returnFromEditBtn.addEventListener("click", (e)=>{
+    e.preventDefault();
+
+    editNoteModal.close();
+});
+
+//event listeners for leaving the profile page
+logOutBtn.addEventListener("click", async(e)=>{
+    e.preventDefault();
+
+    const result = await logOut();
+    if(result.success){
+        window.location.href = "index.php";
+    }
+
+})
+
+exitProfileBtn.addEventListener("click", async(e)=>{
+    e.preventDefault();
+
+    const result = await exitProfile();
+    if(result.success){
+        window.location.href = "patient-selection.php";
+    }
+})
+
+
 
 //loads notes once DOM loads for the patient Profile
 document.addEventListener("DOMContentLoaded", async()=>{

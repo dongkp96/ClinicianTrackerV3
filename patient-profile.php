@@ -127,11 +127,11 @@ session_start();
 
     <dialog id="edit-note-window">
         <form action="">
-            <h3>Add Patient Visit Note</h3>
+            <h3>Edit Patient Visit Note</h3>
             <div>
                 <label for="visitNumber-edit">Visit Number</label>
                 <input id = "visitNumber-edit" type="number" name="visitNumber" required>
-                <label for="visitDate">Visit Date:</label>
+                <label for="visitDate-edit">Visit Date:</label>
                 <input id="visitDate-edit" type="date" name="visitDate" required>
             </div>
             <div class="column">
@@ -150,12 +150,12 @@ session_start();
             </div>
             <div class="column">
                 <label for="summary-edit">Visit Summary: </label>
-                <textarea name="summary-edit" id="summary" cols="60" rows="5"></textarea>
+                <textarea name="summary-edit" id="summary-edit" cols="60" rows="5"></textarea>
             </div>
             <div class="modal-button-container">
-                <button id="submit-note">Edit Note</button>
+                <button id="edit-note">Edit Note</button>
                 <button id="delete-note">Delete Note</button>
-                <button id="return-add-note">Cancel</button>
+                <button id="return-edit-note">Cancel</button>
             </div>
         </form>
     </dialog>
