@@ -33,20 +33,17 @@ const errorMsgBtn = document.getElementById("error-exit");
 /*list containing clinician names to be selected*/
 const clinicianList = document.querySelector(".list");
 
-async function getClinicians(){
-    console.log("⚙️ Running getClinicians...");
+/*Functions */
+
+async function getClinicians(){//Retrieves clinician data and renders clinician list
     try{
         const results = await fetch("PHP/Clinicians/getClinicians.php");
-        console.log("📡 Fetched data from getClinicians.php");
-
 
         const clinicians = await results.json(); 
-        console.log("👀 Clinicians received:", clinicians);
-
 
         const clinicianList = document.querySelector(".list");
         clinicianList.innerHTML ="";
-        console.log("🧹 Cleared clinician list");
+
         clinicians.forEach(clinician => {
             const listItem = document.createElement("li");
             listItem.textContent = `${clinician.first_name} ${clinician.last_name}`;
@@ -58,7 +55,8 @@ async function getClinicians(){
     }
 };
 
-async function addClinicians(newClinician){
+
+async function addClinicians(newClinician){// used to add clinician info to the database
     try{
         const response = await fetch("PHP/Clinicians/addClinicians.php",{
             method: "POST",
@@ -77,7 +75,7 @@ async function addClinicians(newClinician){
 
 };
 
-async function deleteClinician(clinician){
+async function deleteClinician(clinician){//deletes clinician from database
     try{
         const response = await fetch("PHP/Clinicians/deleteClinicians.php",{
             method: "POST",
@@ -94,7 +92,7 @@ async function deleteClinician(clinician){
     }
 }
 
-async function loginClinician(loginInfo){
+async function loginClinician(loginInfo){// function for logging in
     try{
         const response = await fetch("PHP/Clinicians/login.php",{
             method: "POST",
@@ -116,7 +114,7 @@ async function loginClinician(loginInfo){
 /*event listeners*/
 
 //main page buttons
-addBtn.addEventListener("click", (e)=>{
+addBtn.addEventListener("click", (e)=>{//switches display to clinician registration
     e.preventDefault();
 
     clinicianCreate.classList.toggle("display-none");
@@ -126,7 +124,7 @@ addBtn.addEventListener("click", (e)=>{
 
 });
 
-selectBtn.addEventListener("click", (e)=>{
+selectBtn.addEventListener("click", (e)=>{//switches display to login Go or delete clinician
     e.preventDefault();
 
     if(document.getElementById("selected")){
@@ -146,7 +144,7 @@ selectBtn.addEventListener("click", (e)=>{
 
 //registration dialog buttpns
 
-registerReturnBtn.addEventListener("click", async (e)=>{
+registerReturnBtn.addEventListener("click", async (e)=>{//brings back from registration page
     e.preventDefault();
 
     await getClinicians();
@@ -157,7 +155,7 @@ registerReturnBtn.addEventListener("click", async (e)=>{
 
 });
 
-registerBtn.addEventListener("click", async (e)=>{
+registerBtn.addEventListener("click", async (e)=>{//used to register and add clinician info to DB
     e.preventDefault();
 
     const first = document.getElementById("firstName").value;
@@ -165,36 +163,39 @@ registerBtn.addEventListener("click", async (e)=>{
     const username = document.getElementById("username").value;
     const passkey = document.getElementById("passkey").value;
 
-    const newClinician = {
-        first_name:first,
-        last_name:last,
-        username:username,
-        passkey: passkey
-    };
-
-    const result = await addClinicians(newClinician);
-    
-    if(result.success){
-        
-        document.getElementById("firstName").value = "";
-        document.getElementById("lastName").value ="";
-        document.getElementById("username").value = "";
-        document.getElementById("passkey").value ="";
-
-        await getClinicians();
-        clinicianCreate.classList.toggle("display-none");
-        clinicianCreate.classList.toggle("display");
-        clinicianHome.classList.toggle("display-flex");
-        clinicianHome.classList.toggle("display-none");
+    if(!first||!last||!username||!passkey){
+        errorMsg.textContent = "Input field(s) left unfilled. Please fill out all sections";
+        errorDialog.showModal();        
     }else{
-        alert("Error. Clinician Not Added");
-    }
+        const newClinician = {
+            first_name:first,
+            last_name:last,
+            username:username,
+            passkey: passkey
+        };
 
+        const result = await addClinicians(newClinician);
+        
+        if(result.success){  
+            document.getElementById("firstName").value = "";
+            document.getElementById("lastName").value ="";
+            document.getElementById("username").value = "";
+            document.getElementById("passkey").value ="";
 
+            await getClinicians();
+            clinicianCreate.classList.toggle("display-none");
+            clinicianCreate.classList.toggle("display");
+            clinicianHome.classList.toggle("display-flex");
+            clinicianHome.classList.toggle("display-none");
+        }else{
+            errorMsg.textContent = "Username has already been used. Please try another username";
+            errorDialog.showModal();
+        }                
+    };
 });
 
 //Clinician selected diaolog page buttons
-selectReturnBtn.addEventListener("click", async (e)=>{
+selectReturnBtn.addEventListener("click", async (e)=>{//returns from select display
     e.preventDefault();
 
     await getClinicians();
@@ -204,7 +205,7 @@ selectReturnBtn.addEventListener("click", async (e)=>{
     clinicianHome.classList.toggle("display-none");   
 });
 
-loginGoBtn.addEventListener("click", (e)=>{
+loginGoBtn.addEventListener("click", (e)=>{//switches display to login form
     e.preventDefault();
 
     login.classList.toggle("display-none");
@@ -214,7 +215,7 @@ loginGoBtn.addEventListener("click", (e)=>{
     
 });
 
-deleteBtn.addEventListener("click", async (e)=>{
+deleteBtn.addEventListener("click", async (e)=>{//triggers deleting clinician
     e.preventDefault();
 
     const clinician = document.getElementById("selected");
@@ -248,31 +249,49 @@ loginReturnBtn.addEventListener("click", (e)=>{
     clinicianSelect.classList.toggle("display");       
 });
 
-loginBtn.addEventListener("click", async(e)=>{
+loginBtn.addEventListener("click", async(e)=>{//triggers login
     e.preventDefault();
 
     const username = document.getElementById("login-username").value;
     const password = document.getElementById("password").value;
 
-    const loginInfo = {
-        username: username,
-        password: password
-    }
-
-    const result = await loginClinician(loginInfo);
-
-    if(result.success){
-        document.getElementById("login-username").value = "";
-        document.getElementById("password").value = "";
-        window.location.href = "patient-selection.php";
+    if(!username||!password){
+        if(!username && !password){
+            errorMsg.textContent = "No login information provided";
+            errorDialog.showModal();
+        }else if(!username){
+            errorMsg.textContent = "No Username entered";
+            errorDialog.showModal();
+            document.getElementById("login-username").value = "";
+            document.getElementById("password").value = "";    
+        }else{
+            errorMsg.textContent = "No password entered";
+            document.getElementById("login-username").value = "";
+            document.getElementById("password").value = "";
+            errorDialog.showModal(); 
+        }
     }else{
-        document.getElementById("login-username").value = "";
-        document.getElementById("password").value = "";
-        alert(result.error);
+        const loginInfo = {
+            username: username,
+            password: password
+        }
+
+        const result = await loginClinician(loginInfo);
+
+        if(result.success){
+            document.getElementById("login-username").value = "";
+            document.getElementById("password").value = "";
+            window.location.href = "patient-selection.php";
+        }else{
+            document.getElementById("login-username").value = "";
+            document.getElementById("password").value = "";
+            errorMsg.textContent = "Invalid Password";
+            errorDialog.showModal(); 
+        }        
     }
 });
 
-errorMsgBtn.addEventListener("click", (e)=>{
+errorMsgBtn.addEventListener("click", (e)=>{//closes error modal
     e.preventDefault();
 
     errorDialog.close();
@@ -283,7 +302,7 @@ errorMsgBtn.addEventListener("click", (e)=>{
 
 //clinician list
 
-clinicianList.addEventListener("click", (e)=>{
+clinicianList.addEventListener("click", (e)=>{//allows clinician list items to get selected ID
     
     if(document.getElementById("selected")){
         const lastSelected = document.getElementById("selected");
@@ -296,13 +315,9 @@ clinicianList.addEventListener("click", (e)=>{
     }
 });
 
-//Document loading
-console.log("📋 getClinicians function:", typeof getClinicians);
-console.log("📋 getClinicians function:", getClinicians);
 
-document.addEventListener("DOMContentLoaded", async ()=>{
-    console.log("🟢 DOMContentLoaded event fired!");
-    console.log("DOMContentLoaded event fired!");
+document.addEventListener("DOMContentLoaded", async ()=>{//loads clinician list when page loads
+
     await getClinicians();
 
 });

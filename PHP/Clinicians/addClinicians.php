@@ -17,6 +17,19 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     try{
         require_once "../db-connect.php";
 
+        $query = "SELECT username FROM clinicians where username = :username";
+
+        $stmt = $pdo->prepare($query);
+        $stmt->bindParam(":username", $username);
+        $stmt->execute();
+
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if($user){
+            echo json_encode(["success" => false, "error" => "username taken"]);
+            exit();
+        }
+
         $query = "INSERT INTO clinicians (username, passkey, first_name, last_name) VALUES (:username, :passkey, :first_name, :last_name)";
 
         $stmt = $pdo->prepare($query);
@@ -34,7 +47,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
         $stmt->execute();
         echo json_encode(["success"=> true]);
-
+        exit();
 
     }catch(PDOException $e){
         http_response_code(500);
