@@ -46,5 +46,8 @@ if(isset($_SESSION["clinician_id"]) && isset($_SESSION["clinician_first_name"]) 
             echo json_encode(["error" => "Database error", "details" => $e->getMessage()]);
             exit();
         }
+    }else{
+        header("Location: ../../index.php");
+        exit();
     }
 }

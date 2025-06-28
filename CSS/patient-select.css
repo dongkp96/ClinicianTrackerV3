@@ -94,7 +94,7 @@ button:hover{
     opacity: 0.50;
 }
 
-.list li:hover{
+.list li:hover, #selected{
     background-color:#D5C6E0; /*e2e0f4*/
 }
 

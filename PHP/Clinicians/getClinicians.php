@@ -19,4 +19,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET"){
       echo json_encode(['error' => 'Database error', 'details' => $e->getMessage()]);
       exit();
     }
+}else{
+    header("Location: ../../index.php");
+    exit();
 }

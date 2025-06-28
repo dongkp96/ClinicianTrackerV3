@@ -25,10 +25,12 @@ if(isset($_SESSION["clinician_id"]) && isset($_SESSION["clinician_first_name"]) 
 
     }else{
         header("Location: ../../index.php");
+        exit();
     }    
 }else{
     session_destroy();
     header("Location:../../index.php");
+    exit();
 }
 
 

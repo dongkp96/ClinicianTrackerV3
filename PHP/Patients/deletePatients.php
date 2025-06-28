@@ -23,7 +23,11 @@ if(isset($_SESSION["clinician_id"]) && isset($_SESSION["clinician_first_name"]) 
         }catch(PDOException $e){
             http_response_code(500);
             echo json_encode(["error" => "database error", "details" => $e->getMessage()]);
+            exit();
                 
         }
     }
+}else{
+    header("Location: ../../index.php");
+    exit();
 }

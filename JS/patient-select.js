@@ -31,8 +31,9 @@ const errorMsgBtn = document.getElementById("error-exit");
 
 /*Functions */
 
-//Function get patients from PHP page and implement them on DOM
+
 async function getPatients(){
+    //Function get patients from PHP page and implement them on DOM
     try{
         const results = await fetch("PHP/Patients/getPatients.php");
 
@@ -53,8 +54,9 @@ async function getPatients(){
     }
 }
 
-//Function to add patient by sending a post request with JSON
+
 async function addPatients(newPatient){
+    //Function to add patient by sending a post request with JSON
     try{
         const response = await fetch("PHP/Patients/addPatients.php",{
             method: "POST",
@@ -71,8 +73,9 @@ async function addPatients(newPatient){
     }
 }
 
-//Function to delete patient by ID by sending a post request with JSON
+
 async function deletePatient(patient){
+    //Function to delete patient by ID by sending a post request with JSON
     try{
         const response = await fetch("PHP/Patients/deletePatients.php", {
             method:"POST",
@@ -88,8 +91,9 @@ async function deletePatient(patient){
     }
 }
 
-//Function that uses patient ID to ensure matching ID values prior to sending user to profile
+
 async function goToProfile(patient){
+    //Function that uses patient ID to ensure matching ID values prior to sending user to profile
     try{
         const response = await fetch("PHP/Patients/patientProfile.php",{
             method: "POST",
@@ -107,6 +111,7 @@ async function goToProfile(patient){
 }
 
 async function logOut(){
+    //used to call logout function script 
     try{
         const response = await fetch("PHP/logout.php",{method: "POST"})
         const result = await response.json();
@@ -120,6 +125,7 @@ async function logOut(){
 
 //main page buttons
 addBtn.addEventListener("click", (e)=>{
+    //directs to patient registration
     e.preventDefault();
 
     patientCreate.classList.toggle("display-none");
@@ -130,6 +136,7 @@ addBtn.addEventListener("click", (e)=>{
 });
 
 selectBtn.addEventListener("click", (e)=>{
+    //Directs to patient selected display
     e.preventDefault();
 
     if(document.getElementById("selected")){
@@ -149,6 +156,7 @@ selectBtn.addEventListener("click", (e)=>{
 //registration dialog buttpns
 
 registerReturnBtn.addEventListener("click", (e)=>{
+    //returns from registration
     e.preventDefault();
 
     patientCreate.classList.toggle("display-none");
@@ -159,6 +167,7 @@ registerReturnBtn.addEventListener("click", (e)=>{
 });
 
 registerBtn.addEventListener("click", async(e)=>{
+    //used to trigger patient registration to DB
     e.preventDefault();
 
     firstName = document.getElementById("firstName").value;
@@ -170,44 +179,52 @@ registerBtn.addEventListener("click", async(e)=>{
     dob = document.getElementById("dob").value;
     gender = document.querySelector("input[name='gender']:checked")?.value;
 
-    const newPatient = {
-        firstName: firstName,
-        lastName: lastName,
-        diagnosis: diagnosis,
-        weight: weight,
-        height: height,
-        age: age,
-        dob: dob,
-        gender: gender
-    };
-
-    const result = await addPatients(newPatient);
-
-    if(result.success){
-        document.getElementById("firstName").value ="";
-        document.getElementById("lastName").value="";
-        document.getElementById("diagnosis").value="";
-        document.getElementById("weight").value="";
-        document.getElementById("height").value="";
-        document.getElementById("age").value="";
-        document.getElementById("dob").value="";
-
-        await getPatients();
-
-        patientCreate.classList.toggle("display-none");
-        patientCreate.classList.toggle("display");
-        patientHome.classList.toggle("display-flex");
-        patientHome.classList.toggle("display-none");
-
-
+    if(!firstName || !lastName ||!diagnosis||!weight||!height||!age||!dob||!gender){
+        errorMsg.textContent = "Input field(s) left unfilled. Please fill out all sections";
+        errorDialog.showModal();          
     }else{
-        alert("Error. Patient not added")
+        const newPatient = {
+            firstName: firstName,
+            lastName: lastName,
+            diagnosis: diagnosis,
+            weight: weight,
+            height: height,
+            age: age,
+            dob: dob,
+            gender: gender
+        };
+
+        const result = await addPatients(newPatient);
+
+        if(result.success){
+            document.getElementById("firstName").value ="";
+            document.getElementById("lastName").value="";
+            document.getElementById("diagnosis").value="";
+            document.getElementById("weight").value="";
+            document.getElementById("height").value="";
+            document.getElementById("age").value="";
+            document.getElementById("dob").value="";
+
+            await getPatients();
+
+            patientCreate.classList.toggle("display-none");
+            patientCreate.classList.toggle("display");
+            patientHome.classList.toggle("display-flex");
+            patientHome.classList.toggle("display-none");
+
+
+        }else{
+            errorMsg.textContent = "Error Occured. Patient not registered";
+            errorDialog.showModal();  
+        }        
     }
+
 });
 
 //Patient selected diaolog page buttons
 
 selectReturnBtn.addEventListener("click", (e)=>{
+    //returns from selection display
     e.preventDefault();
 
     patientSelect.classList.toggle("display-none");
@@ -216,7 +233,9 @@ selectReturnBtn.addEventListener("click", (e)=>{
     patientHome.classList.toggle("display-none");   
 });
 
+
 profileGoBtn.addEventListener("click", async (e)=>{
+    //used to trigger file to go to profile page
     e.preventDefault();
 
     const patient = document.getElementById("selected");
@@ -236,7 +255,9 @@ profileGoBtn.addEventListener("click", async (e)=>{
 
 });
 
+
 deleteBtn.addEventListener("click", async (e)=>{
+    //used to trigger patient delete
     e.preventDefault();
 
     const patient = document.getElementById("selected");
@@ -257,7 +278,9 @@ deleteBtn.addEventListener("click", async (e)=>{
 
 });
 
+
 logOutBtn.addEventListener("click", async(e)=>{
+    //Logs clinician out
     e.preventDefault();
 
     const result = await logOut();
@@ -267,11 +290,14 @@ logOutBtn.addEventListener("click", async(e)=>{
 
 })
 
+
 errorMsgBtn.addEventListener("click", (e)=>{
+    //closes error modal
     e.preventDefault();
 
     errorDialog.close();
 })
+
 
 //Patient list 
 patientList.addEventListener("click", (e)=>{
