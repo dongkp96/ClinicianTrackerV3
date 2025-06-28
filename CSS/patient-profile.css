@@ -97,6 +97,7 @@ button:hover, .visit-note:hover{
 
 #notes{
     border:5px solid #D5C6E0;
+    height:885px;
 
 }
 #notes-nav{
@@ -110,7 +111,7 @@ button:hover, .visit-note:hover{
 #notes-holder{
     background-color:#F5E6E8;
     width:100%;
-    height:70%;
+    height:90%;
     padding:1rem 2rem;
     overflow:scroll;
 }

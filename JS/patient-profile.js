@@ -58,6 +58,24 @@ async function addNote(note){
     }
 }
 
+async function deleteNote(note){
+    try{
+        
+        const response = await fetch("PHP/Profile/deleteNotes.php",{
+            method: "POST",
+            headers:{
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(note)
+        });
+        const rawText = await response.text();
+        const result = JSON.parse(rawText);
+        return result;
+    }catch(error){
+        return{success:false};
+    }
+}
+
 async function getNotes(){
     try{
         const response = await fetch("PHP/Profile/getNotes.php")
@@ -122,6 +140,8 @@ async function getNotes(){
 };
 
 
+
+
 /*event listeners */
 
 //Event Listeners for adding note modal
@@ -177,13 +197,15 @@ submitNoteBtn.addEventListener("click", async(e)=>{
 notesList.addEventListener("click", (e)=>{
     e.preventDefault();
 
+
     const note = e.target.closest(".visit-note");
+    const listItem = note.parentNode;
     if(document.getElementById("selected")){
         const lastSelected = document.getElementById("selected");
         lastSelected.removeAttribute("id");
-        note.setAttribute("id", "selected");
+        listItem.setAttribute("id", "selected");
     }else{
-        note.setAttribute("id", "selected");
+        listItem.setAttribute("id", "selected");
     }
     
     const noteInfoContainer = note.querySelector(".visit-note-info");
@@ -220,6 +242,27 @@ returnFromEditBtn.addEventListener("click", (e)=>{
     e.preventDefault();
 
     editNoteModal.close();
+});
+
+
+deleteNoteBtn.addEventListener("click", async(e)=>{
+    e.preventDefault();
+
+    const note = document.getElementById("selected");
+    const noteClass = note.getAttribute("class");
+    const noteId = noteClass.split("-").pop();
+
+    const deletedNote = {
+        note_id: noteId
+    };
+
+    const result = await deleteNote(deletedNote);
+    console.log(result);
+
+    if(result.success){
+        await getNotes();
+        editNoteModal.close();
+    }
 });
 
 //event listeners for leaving the profile page
