@@ -85,9 +85,12 @@ session_start();
 
         <section id="charts">
             <h2>Patient Data Charts</h2>
-            <div id="pain-chart">
+            <canvas class="chart" id="pain-chart"></canvas>
+            <hr>
+            <canvas class="chart" id="function-chart"></canvas>
+            <hr>
+            <canvas class="chart" id="goals-chart"></canvas>
 
-            </div>
         </section>
     </main>
 
