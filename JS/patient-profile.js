@@ -59,9 +59,8 @@ async function addNote(note){
 }
 
 async function deleteNote(note){
-    try{
-        
-        const response = await fetch("PHP/Profile/deleteNotes.php",{
+    try{      
+        const response = await fetch("PHP/Profile/deleteNote.php",{
             method: "POST",
             headers:{
                 "Content-Type": "application/json"
@@ -73,6 +72,22 @@ async function deleteNote(note){
         return result;
     }catch(error){
         return{success:false};
+    }
+}
+
+async function editNote(note){
+    try{
+        const response = await fetch("PHP/Profile/editNote.php", {
+            method: "POST",
+            header: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(note)
+        })
+        const result = await response.json();
+        return result;
+    }catch(error){
+       return{success:false}; 
     }
 }
 
@@ -263,6 +278,31 @@ deleteNoteBtn.addEventListener("click", async(e)=>{
         await getNotes();
         editNoteModal.close();
     }
+});
+
+editNoteBtn.addEventListener("click", async(e)=>{
+    e.preventDefault();
+    const note = document.getElementById("selected");
+    const noteClass = note.getAttribute("class");
+    const noteId = noteClass.split("-").pop();
+
+    const editedNote = {
+        visitNumber: document.getElementById("visitNumber-edit").value,
+        visitDate: document.getElementById("visitDate-edit").value,
+        painLevel: document.getElementById("painLevel-edit").value,
+        function: document.getElementById("function-edit").value,
+        goals: document.getElementById("goals-edit").value,
+        summary: document.getElementById("summary-edit").value,
+        note_id:noteId
+    };
+
+    const result = await editNote(editedNote);
+
+    if(result.success){
+        await getNotes();
+        editNoteModal.close();        
+    }
+
 });
 
 //event listeners for leaving the profile page
