@@ -85,11 +85,13 @@ session_start();
 
         <section id="charts">
             <h2>Patient Data Charts</h2>
-            <canvas class="chart" id="pain-chart"></canvas>
-            <hr>
-            <canvas class="chart" id="function-chart"></canvas>
-            <hr>
-            <canvas class="chart" id="goals-chart"></canvas>
+            <div class = "chart-holder">
+                <canvas class="chart" id="pain-chart"></canvas>    
+            </div>
+            <div class = "chart-holder">
+                <canvas class="chart" id="function-chart"></canvas>    
+            </div>
+
 
         </section>
     </main>
@@ -162,6 +164,7 @@ session_start();
             </div>
         </form>
     </dialog>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="JS/patient-profile.js"></script>
 </body>
 </html>

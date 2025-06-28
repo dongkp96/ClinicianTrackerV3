@@ -20,6 +20,10 @@ const returnFromEditBtn = document.getElementById("return-edit-note");
 
 //Notes List
 const notesList = document.getElementById("notes-list");
+
+//Charts
+let painChart = null;
+let functionChart = null;
 /*functions */
 
 async function logOut(){
@@ -154,8 +158,133 @@ async function getNotes(){
 
 };
 
+function renderPainChart(visitNumbers, painLevels){
+    const ctx = document.getElementById("pain-chart").getContext("2d");
+    //used to get 2D drawing context of pain-chart canvas element
+
+    if(painChart){
+        painChart.destroy();
+    }
+
+    painChart = new Chart(ctx, {
+        type: 'line',
+        data:{
+            labels:visitNumbers, //X-axis labels
+            datasets:[{
+                label:"Pain Level", //Label for dataset
+                data: painLevels, //Y-axis labels
+                borderColor: "#192A51", //line color
+                backgroundColor: "#F5E6E8", //area under line
+                fill: false, // disables area under line
+                tension:0.3, // for line smoothness
+                pointRadius: 5, // size of data points
+                pointHoverRadius:7 // size of data points when hovering over it
+                
+            }]
+        },
+        options:{
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins:{
+                title:{
+                    display:true,
+                    text: "Patient Pain level over time" //Chart title
+                }
+            },
+            scales:{
+                y:{
+                    beginAtZero: true,
+                    suggestedMax: 10,
+                    title:{
+                        display:true,
+                        text: "Pain Level (0-10)" //Y-axis label
+                    }
+                },
+                x:{
+                    title:{
+                        display:true,
+                        text:"Visit Number" //X-axis label
+                    }
+                }
+            }
+        }
+
+    });
+
+}
+
+function renderFunctionChart(visitNumbers, functionRating){
+    const ctx = document.getElementById("function-chart").getContext("2d");
+    //used to get 2D drawing context of function-chart canvas element
+
+    if(functionChart){
+        functionChart.destroy();
+    }
+
+    functionChart = new Chart(ctx, {
+        type: 'line',
+        data:{
+            labels:visitNumbers, //X-axis labels
+            datasets:[{
+                label:"Function Rating", //Label for dataset
+                data: functionRating, //Y-axis labels
+                borderColor: "#192A51", //line color
+                backgroundColor: "#F5E6E8", //area under line
+                fill: false, // disables area under line
+                tension:0.3, // for line smoothness
+                pointRadius: 5, // size of data points
+                pointHoverRadius:7 // size of data points when hovering over it
+                
+            }]
+        },
+        options:{
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins:{
+                title:{
+                    display:true,
+                    text: "Patient function rating over time" //Chart title
+                }
+            },
+            scales:{
+                y:{
+                    beginAtZero: true,
+                    suggestedMax: 10,
+                    title:{
+                        display:true,
+                        text: "Function Rating (0-10)" //Y-axis label
+                    }
+                },
+                x:{
+                    title:{
+                        display:true,
+                        text:"Visit Number" //X-axis label
+                    }
+                }
+            }
+        }
+
+    });
+
+}
+
+async function renderVisitData(){
+    try{
+        const response = await fetch("PHP/Profile/getVisitData.php");
+        const data = await response.json();
+
+        const visitNumbers = data.map(note => note.visit_number);
+        const painLevels = data.map(note => parseInt(note.pain_level));
+        const functionRatings = data.map(note => parseInt(note.function_rating));
+
+        renderFunctionChart(visitNumbers, functionRatings);
+        renderPainChart(visitNumbers, painLevels);
 
 
+    }catch(error){
+        console.log(error);
+    }
+}
 
 /*event listeners */
 
@@ -196,6 +325,7 @@ submitNoteBtn.addEventListener("click", async(e)=>{
 
     if(result.success){
         await getNotes();
+        await renderVisitData();
         document.getElementById("visitNumber").value ="";
         document.getElementById("visitDate").value="";
         document.getElementById("painLevel").value="";
@@ -276,6 +406,7 @@ deleteNoteBtn.addEventListener("click", async(e)=>{
 
     if(result.success){
         await getNotes();
+        await renderVisitData();
         editNoteModal.close();
     }
 });
@@ -300,6 +431,7 @@ editNoteBtn.addEventListener("click", async(e)=>{
 
     if(result.success){
         await getNotes();
+        await renderVisitData();
         editNoteModal.close();        
     }
 
@@ -331,4 +463,5 @@ exitProfileBtn.addEventListener("click", async(e)=>{
 document.addEventListener("DOMContentLoaded", async()=>{
 
     await getNotes();
+    await renderVisitData();
 })
