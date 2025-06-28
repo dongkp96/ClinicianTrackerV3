@@ -164,6 +164,13 @@ session_start();
             </div>
         </form>
     </dialog>
+
+    <dialog id="error">
+        <h3>Error:</h3>
+        <p id="error-message"></p>
+        <button id="error-exit">Return</button>
+    </dialog>        
+    
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="JS/patient-profile.js"></script>
 </body>

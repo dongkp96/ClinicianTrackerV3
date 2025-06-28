@@ -1,6 +1,8 @@
 /*Windows and Items*/
 const addNoteModal = document.getElementById("add-note-window");
 const editNoteModal = document.getElementById("edit-note-window");
+const errorDialog = document.getElementById("error");
+const errorMsg = document.getElementById("error-message");
 
 /*Buttons */
 
@@ -17,6 +19,9 @@ const returnFromAddNoteBtn = document.getElementById("return-add-note");
 const editNoteBtn = document.getElementById("edit-note");
 const deleteNoteBtn = document.getElementById("delete-note");
 const returnFromEditBtn = document.getElementById("return-edit-note");
+
+//Error messaging dialog button
+const errorMsgBtn = document.getElementById("error-exit");
 
 //Notes List
 const notesList = document.getElementById("notes-list");
@@ -311,31 +316,36 @@ submitNoteBtn.addEventListener("click", async(e)=>{
     const goals= document.getElementById("goals").value;
     const summary = document.getElementById("summary").value;
 
-    const newNote = {
-        visitNumber: visitNumber,
-        visitDate: visitDate,
-        painLevel: pain,
-        functionRating: functionRating,
-        goals: goals,
-        summary: summary
-    };
+    if(!visitNumber||!visitDate||!pain||!functionRating||!goals||!summary){
+        errorMsg.textContent = "Input field(s) left unfilled. Please fill out all sections";
+        errorDialog.showModal();            
+    }else{
+        const newNote = {
+            visitNumber: visitNumber,
+            visitDate: visitDate,
+            painLevel: pain,
+            functionRating: functionRating,
+            goals: goals,
+            summary: summary
+        };
 
-    const result = await addNote(newNote);
-    
-
-    if(result.success){
-        await getNotes();
-        await renderVisitData();
-        document.getElementById("visitNumber").value ="";
-        document.getElementById("visitDate").value="";
-        document.getElementById("painLevel").value="";
-        document.getElementById("function").value="";
-        document.getElementById("goals").value="";
-        document.getElementById("summary").value="";
+        const result = await addNote(newNote);
         
-        addNoteModal.close();
 
+        if(result.success){
+            await getNotes();
+            await renderVisitData();
+            document.getElementById("visitNumber").value ="";
+            document.getElementById("visitDate").value="";
+            document.getElementById("painLevel").value="";
+            document.getElementById("function").value="";
+            document.getElementById("goals").value="";
+            document.getElementById("summary").value="";
+            
+            addNoteModal.close();
+        }
     }
+
 });
 
 //Event Listeners for editing notes
@@ -417,22 +427,36 @@ editNoteBtn.addEventListener("click", async(e)=>{
     const noteClass = note.getAttribute("class");
     const noteId = noteClass.split("-").pop();
 
-    const editedNote = {
-        visitNumber: document.getElementById("visitNumber-edit").value,
-        visitDate: document.getElementById("visitDate-edit").value,
-        painLevel: document.getElementById("painLevel-edit").value,
-        function: document.getElementById("function-edit").value,
-        goals: document.getElementById("goals-edit").value,
-        summary: document.getElementById("summary-edit").value,
-        note_id:noteId
-    };
+    const visitNumber = document.getElementById("visitNumber-edit").value;
+    const visitDate = document.getElementById("visitDate-edit").value;
+    const pain= document.getElementById("painLevel-edit").value;
+    const functionRating = document.getElementById("function-edit").value;
+    const goals= document.getElementById("goals-edit").value;
+    const summary = document.getElementById("summary-edit").value;
 
-    const result = await editNote(editedNote);
+    if(!visitNumber||!visitDate||!pain||!functionRating||!goals||!summary){
+            errorMsg.textContent = "Input field(s) left unfilled. Please fill out all sections";
+            errorDialog.showModal();            
+    }else{
+        const editedNote = {
+            visitNumber: visitNumber,
+            visitDate: visitDate,
+            painLevel: pain,
+            function: functionRating,
+            goals: goals,
+            summary: summary,
+            note_id:noteId
+        };
 
-    if(result.success){
-        await getNotes();
-        await renderVisitData();
-        editNoteModal.close();        
+
+
+        const result = await editNote(editedNote);
+
+        if(result.success){
+            await getNotes();
+            await renderVisitData();
+            editNoteModal.close();        
+        }       
     }
 
 });
@@ -457,6 +481,11 @@ exitProfileBtn.addEventListener("click", async(e)=>{
     }
 })
 
+errorMsgBtn.addEventListener("click", (e)=>{//closes error modal
+    e.preventDefault();
+
+    errorDialog.close();
+})
 
 
 //loads notes once DOM loads for the patient Profile

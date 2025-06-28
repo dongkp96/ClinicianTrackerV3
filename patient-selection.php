@@ -50,7 +50,7 @@
                     <input id="diagnosis" name="diagnosis" type="text" required>
                 </div>
                 <div>
-                    <label for="weight">Weight:</label>
+                    <label for="weight">Weight (lb):</label>
                     <input id="weight" type="number" max="1500" name="weight" required> 
                 </div>
                 <div>
